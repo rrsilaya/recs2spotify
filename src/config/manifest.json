@@ -3,16 +3,23 @@
     "description": "Simple extension that exports selected thread music recommendations from music recs without context facebook group",
     "version": "0.1.1",
     "permissions": [
-        "http://*/*",
-        "https://*/*",
         "contextMenus",
         "tabs",
         "identity",
-        "storage"
+        "storage",
+        "activeTab",
+        "declarativeContent"
     ],
     "content_scripts": [{
-        "js": ["bundle.js"],
-        "matches": ["http://*/*", "https://*/*"]
+        "js": ["core.js"],
+        "matches": ["<all_urls>"]
     }],
+    "page_action": {
+        "default_popup": "popup.html"
+    },
+    "background": {
+        "scripts": ["background.js"],
+        "persistent": false
+    },
     "manifest_version": 2
 }
