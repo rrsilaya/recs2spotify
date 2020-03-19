@@ -1,9 +1,10 @@
-import { Scraper } from './util';
+import { Scraper, Sender } from './util';
 import { Command } from './constants';
 
 class Core {
     constructor() {
         this.scraper = new Scraper();
+        this.sender = new Sender();
         this.posts = [];
 
         this.getContexts = this.getContexts.bind(this);
@@ -17,9 +18,12 @@ class Core {
     }
 
     getRecsFromId(id) {
+        const URL_REGEX = /^https?:\/\/open\.spotify\.com\/track\/(\w+)\?/;
+
         const recs = this.scraper.getMusicFromPost(this.posts[id]);
-        console.log(recs);
-        return recs;
+        const trackIds = recs.map(url => url.match(URL_REGEX)[1]);
+
+        return trackIds;
     }
 
     start() {
@@ -31,12 +35,18 @@ class Core {
                     break;
 
                 case Command.GET_RECS:
-                    const recs = this.getRecsFromId(request.payload);
-                    sendResponse(recs);
+                    const tracks = this.getRecsFromId(request.payload);
+
+                    this.sender.sendToRuntime({
+                        type: Command.GET_TRACKS_INFO,
+                        payload: tracks,
+                    }, response => console.log(response));
+
+                    sendResponse(tracks);
                     break;
 
-                default:
-                    throw new Error('Unknown command intercepted');
+                // default:
+                //     throw new Error('Unknown command intercepted');
             }
         });
     }

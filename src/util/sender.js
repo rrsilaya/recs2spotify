@@ -4,6 +4,10 @@ class Sender {
             chrome.tabs.sendMessage(tabs[0].id, payload, callback);
         })
     }
+
+    sendToRuntime(payload, callback) {
+        chrome.runtime.sendMessage(payload, callback);
+    }
 }
 
 export default Sender;

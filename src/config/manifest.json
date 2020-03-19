@@ -3,6 +3,8 @@
     "description": "Simple extension that exports selected thread music recommendations from music recs without context facebook group",
     "version": "0.1.1",
     "permissions": [
+        "http://*/*",
+        "https://*/*",
         "contextMenus",
         "tabs",
         "identity",
