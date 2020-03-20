@@ -1,14 +1,36 @@
 <!DOCTYPE html>
 <html>
-<body style="width: 300px">
+    <link rel="stylesheet" href="./style.css">
+<body class="Popup">
+    <div class="Popup-header">
+        <h1 class="Popup-header-title">
+            recs<span class="Popup-header-title--translucent">2</span><span class="Popup-header-title--green">spotify</span>
+        </h1>
+        <p class="Popup-header-description">
+            Export selected thread from music recs without context facebook group to Spotify
+        </p>
+    </div>
+
+    <div class="Popup-content">
+        <button class="Button Button-primary" id="authenticate">Authenticate</button>
+
+        <div class="Select-wrapper Margin-bottom--tiny">
+            <select class="Select" name="contexts" id="contexts">
+                <option selected disabled value="">Please select context</option>
+            </select>
+        </div>
+        <div class="Button-group Button-group--flushRight">
+            <button class="Button Button-primary" id="get-list">Get List</button>
+        </div>
+
+        <ul class="Popup-list" id="track-list"></ul>
+
+        <button id="create-playlist" class="Button Button-primary Button--expand">
+            Create Playlist
+        </button>
+    </div>
+
     <div id="auth-user"></div>
-    <select name="contexts" id="contexts">
-        <option selected disabled value="">Please select context</option>
-    </select>
-    <button id="get-list">Get List</button>
-    <button id="authenticate">Authenticate</button>
-    <ul id="track-list"></ul>
-    <button id="create-playlist">Create Playlist</button>
 
     <div id="generated-playlist"></div>
     <script type="text/javascript" src="popup.js"></script>

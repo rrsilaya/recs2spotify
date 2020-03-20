@@ -36,7 +36,26 @@ class PopUp {
 
         tracks.forEach(track => {
             const template = `
-                <li>${track.artist} - ${track.title}</li>
+                <li class="Popup-list-track">
+                    <div class="Popup-list-track-thumbnail">
+                        <img
+                            alt="${track.album}"
+                            class="Popup-list-track-thumbnail-image"
+                            src="${track.thumbnail.url}"
+                        />
+                    </div>
+                    <div class="Popup-list-track-info">
+                        <div class="Popup-list-track-info-title">
+                            ${track.title}
+                        </div>
+                        <div class="Popup-list-track-info-description">
+                            <div class="Popup-list-track-info-artist">
+                                ${track.artist}
+                            </div>
+                            ${track.album}
+                        </div>
+                    </div>
+                </li>
             `;
 
             this.dom.trackList.innerHTML += template;
