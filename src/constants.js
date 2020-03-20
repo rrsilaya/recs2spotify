@@ -8,6 +8,9 @@ export const NodeSelector = {
     DROPDOWN: '#contexts',
     GET_LIST: '#get-list',
     AUTHENTICATE: '#authenticate',
+    TRACK_LIST: '#track-list',
+    CREATE_PLAYST: '#create-playlist',
+    GENERATED_PLAYLIST: '#generated-playlist',
 };
 
 export const Command = {
@@ -15,6 +18,7 @@ export const Command = {
     GET_RECS: 'GET_RECS',
     AUTHENTICATE: 'AUTHENTICATE',
     GET_TRACKS_INFO: 'GET_TRACKS_INFO',
+    CREATE_PLAYLIST: 'CREATE_PLAYLIST',
 };
 
 export const ApiToken = {

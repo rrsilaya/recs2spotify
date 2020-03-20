@@ -35,19 +35,17 @@ class Core {
                     break;
 
                 case Command.GET_RECS:
-                    const tracks = this.getRecsFromId(request.payload);
+                    const recs = this.getRecsFromId(request.payload);
 
                     this.sender.sendToRuntime({
                         type: Command.GET_TRACKS_INFO,
-                        payload: tracks,
-                    }, response => console.log(response));
+                        payload: recs,
+                    }, tracks => sendResponse(tracks));
 
-                    sendResponse(tracks);
                     break;
-
-                // default:
-                //     throw new Error('Unknown command intercepted');
             }
+
+            return true;
         });
     }
 }

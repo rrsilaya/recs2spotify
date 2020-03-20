@@ -86,7 +86,7 @@ class Spotify {
         );
 
         return {
-            url: data.href,
+            url: `https://open.spotify.com/playlist/${data.id}`,
             name: data.name,
             description: data.description,
             id: data.id,
