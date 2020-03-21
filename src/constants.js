@@ -11,6 +11,9 @@ export const NodeSelector = {
     TRACK_LIST: '#track-list',
     CREATE_PLAYST: '#create-playlist',
     GENERATED_PLAYLIST: '#generated-playlist',
+    AUTH_USER: '#auth-user',
+    BLOCKER: '#blocker',
+    LIST_BLOCKER: '#list-blocker',
 };
 
 export const Command = {

@@ -23,10 +23,18 @@ class Background {
     }
 
     authenticate() {
-        chrome.identity.launchWebAuthFlow({
-            url: `https://accounts.spotify.com/authorize?client_id=${ApiToken.CLIENT_ID}&redirect_uri=${encodeURIComponent(this.uri)}&response_type=code&scope=playlist-modify-private`,
-            interactive: true,
-        }, this.handleAuthFlow);
+        return new Promise((resolve) => {
+            chrome.identity.launchWebAuthFlow(
+                {
+                    url: `https://accounts.spotify.com/authorize?client_id=${ApiToken.CLIENT_ID}&redirect_uri=${encodeURIComponent(this.uri)}&response_type=code&scope=playlist-modify-private`,
+                    interactive: true,
+                },
+                response => {
+                    this.handleAuthFlow(response)
+                        .then(identity => resolve(identity));
+                },
+            );
+        });
     }
 
     async handleAuthFlow(response) {
@@ -39,6 +47,7 @@ class Background {
         const me = await spotify.getUserInfo();
 
         this.storage.save({ auth: token, me });
+        return me;
     }
 
     async getTrackInfo(ids = []) {
@@ -70,7 +79,8 @@ class Background {
         chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
             switch (request.type) {
                 case Command.AUTHENTICATE:
-                    this.authenticate();
+                    this.authenticate()
+                        .then(identity => sendResponse(identity));
                     break;
 
                 case Command.GET_TRACKS_INFO:

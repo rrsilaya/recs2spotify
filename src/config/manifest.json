@@ -14,7 +14,7 @@
     ],
     "content_scripts": [{
         "js": ["core.js"],
-        "matches": ["<all_urls>"]
+        "matches": ["https://www.facebook.com/groups/1664811250303043/"]
     }],
     "page_action": {
         "default_popup": "popup.html"

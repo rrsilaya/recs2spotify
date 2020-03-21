@@ -10,7 +10,10 @@ class Installer {
             chrome.declarativeContent.onPageChanged.addRules([{
                 conditions: [
                     new chrome.declarativeContent.PageStateMatcher({
-                        pageUrl: {hostEquals: 'www.facebook.com'},
+                        pageUrl: {
+                            hostEquals: 'www.facebook.com',
+                            pathEquals: '/groups/1664811250303043/'
+                        },
                     }),
                 ],
                 actions: [new chrome.declarativeContent.ShowPageAction()]

@@ -1,6 +1,8 @@
 @import 'fonts';
 @import 'variables';
 
+* { box-sizing: border-box; }
+
 .Popup {
     background-color: $primary-color;
     width: 400px;
@@ -25,6 +27,11 @@
 
     &-content {
         margin-top: $spacing-base;
+        position: relative;
+
+        &--blocked {
+            filter: blur(5px);
+        }
     }
 
     &-list {
@@ -65,6 +72,64 @@
                 }
             }
         }
+
+        &-wrapper {
+            position: relative;
+        }
+
+        &-blocker {
+            position: absolute;
+            left: 0;
+            top: 0;
+            height: 100%;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            background-color: rgba($primary-color, 0.8);
+            z-index: 2;
+
+            &-note {
+                margin-bottom: $spacing-small;
+                display: block;
+                font-size: 14px;
+                padding: 0 $spacing-small;
+
+                &-emp {
+                    font-weight: bold;
+                }
+            }
+
+            &--hidden {
+                display: none;
+            }
+        }
+    }
+
+    &-blocker {
+        position: absolute;
+        left: 0;
+        top: 0;
+        height: 100%;
+        width: 100%;
+        background-color: rgba($primary-color, 0.8);
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        z-index: 2;
+        padding: 0 $spacing-base;
+
+        &-note {
+            margin-bottom: $spacing-small;
+        }
+
+        &--hidden {
+            display: none;
+        }
     }
 }
 
@@ -76,6 +141,7 @@
     cursor: pointer;
     transition: 300ms all ease;
     font-size: 12px;
+    text-decoration: none;
 
     &-primary {
         background-color: $spotify-color;
@@ -98,7 +164,7 @@
         border: 1px solid $white-color;
 
         &:hover {
-            border: 1px solid darken($spotify-color, 5%);
+            border: 1px solid darken($white-color, 25%);
         }
     }
 
@@ -107,9 +173,28 @@
     }
 
     &--expand { width: 100%; }
+    &--loading {
+        position: relative;
+        color: transparent;
+        pointer-events: none;
+
+        &::after {
+            height: 8px;
+            width: 8px;
+            content: '';
+            border: 2px solid $white-color;
+            border-top: 2px solid transparent;
+            border-radius: 50%;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            animation: spin 1s linear infinite;
+        }
+    }
 
     &-group {
         display: flex;
+        align-items: center;
 
         & > .Button:not(:last-child) {
             margin-right: $spacing-small;
@@ -133,6 +218,7 @@
     width: 100%;
     font-size: 12px;
     cursor: pointer;
+    padding-right: $spacing-large;
 
     &-wrapper {
         position: relative;
@@ -160,4 +246,15 @@
             margin-bottom: $spacing-small;
         }
     }
+
+    &-right {
+        &--small {
+            margin-right: $spacing-small;
+        }
+    }
+}
+
+@keyframes spin {
+    from { transform: translate(-50%, -50%) rotate(0deg); }
+    to { transform: translate(-50%, -50%) rotate(360deg); }
 }

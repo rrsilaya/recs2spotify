@@ -12,27 +12,47 @@
     </div>
 
     <div class="Popup-content">
-        <button class="Button Button-primary" id="authenticate">Authenticate</button>
-
-        <div class="Select-wrapper Margin-bottom--tiny">
-            <select class="Select" name="contexts" id="contexts">
-                <option selected disabled value="">Please select context</option>
-            </select>
-        </div>
-        <div class="Button-group Button-group--flushRight">
-            <button class="Button Button-primary" id="get-list">Get List</button>
+        <div id="blocker" class="Popup-blocker Popup-blocker--hidden">
+            <div class="Popup-blocker-note">
+                Seems like I have to no permission to communicate with your Spotify account.
+                Please authenticate first.
+            </div>
+            <button class="Button Button-primary" id="authenticate">Authenticate</button>
         </div>
 
-        <ul class="Popup-list" id="track-list"></ul>
+        <div>
+            <div class="Select-wrapper Margin-bottom--tiny">
+                <select class="Select" name="contexts" id="contexts">
+                    <option selected disabled value="">Please select context</option>
+                </select>
+            </div>
+            <div class="Button-group Button-group--flushRight">
+                <div class="Margin-right--small" id="auth-user"></div>
+                <button class="Button Button-primary" id="get-list" disabled>Get List</button>
+            </div>
 
-        <button id="create-playlist" class="Button Button-primary Button--expand">
-            Create Playlist
-        </button>
+            <div class="Popup-list-wrapper">
+                <div id="list-blocker" class="Popup-list-blocker Popup-list-blocker--hidden">
+                    <div class="Popup-list-blocker-note">
+                        Nice! Enjoy your playlist <span class="Popup-list-blocker-note-emp" id="generated-playlist-title">drop your indie and surf rock songs pls 🥺✨</span>.
+                    </div>
+                    <a
+                        class="Button Button-secondary"
+                        id="generated-playlist-url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        Open Playlist
+                    </a>
+                </div>
+                <ul class="Popup-list" id="track-list"></ul>
+            </div>
+
+            <button id="create-playlist" class="Button Button-primary Button--expand" disabled>
+                Create Playlist
+            </button>
+        </div>
     </div>
-
-    <div id="auth-user"></div>
-
-    <div id="generated-playlist"></div>
     <script type="text/javascript" src="popup.js"></script>
 </body>
 </html>

@@ -68,7 +68,7 @@ class Spotify {
             url: track.href,
             album: track.album.name,
             thumbnail: track.album.images[0],
-            artist: track.artists.map(artist => artist.name).toString(),
+            artist: track.artists.map(artist => artist.name).join(', '),
         }));
     }
 
