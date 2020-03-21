@@ -8,9 +8,9 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 const config = {
     entry: {
-        background: './src/background.js',
-        core: './src/core.js',
-        popup: './src/popup.js',
+        background: ['@babel/polyfill', './src/background.js'],
+        core: ['@babel/polyfill', './src/core.js'],
+        popup: ['@babel/polyfill', './src/popup.js'],
         style: './src/styles/index.scss',
     },
     output: {
