@@ -5,7 +5,8 @@
     "author": "Ralph Lawrence Silaya <rrsilaya@gmail.com>",
     "license": "MIT",
     "scripts": {
-        "start": "webpack --watch"
+        "start": "webpack --watch",
+        "build": "webpack -p --config webpack.prod.config.js"
     },
     "devDependencies": {
         "@babel/core": "^7.8.7",

@@ -1,7 +1,10 @@
 const path = require('path');
 
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin');
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
+const ZipPlugin = require('zip-webpack-plugin');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+
 
 const config = {
     entry: {
@@ -17,11 +20,24 @@ const config = {
     module: {
         rules: [
             {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env']
+                    }
+                }
+            },
+            {
                 test: /\.scss$/,
                 loader: [
                     MiniCssExtractPlugin.loader,
                     'css-loader',
-                    'sass-loader',
+                    {
+                        loader: 'sass-loader',
+                        options: { sourceMap: false },
+                    },
                 ],
             },
             {
@@ -42,7 +58,14 @@ const config = {
             { from: './src/static' },
         ]),
         new MiniCssExtractPlugin({ filename: '[name].css' }),
+        new ZipPlugin({
+            filename: 'recs2spotify.zip'
+        })
     ],
+    optimization: {
+        minimizer: [new UglifyJsPlugin()]
+    }
 };
 
 module.exports = config;
+
