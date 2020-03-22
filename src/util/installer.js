@@ -12,7 +12,7 @@ class Installer {
                     new chrome.declarativeContent.PageStateMatcher({
                         pageUrl: {
                             hostEquals: 'www.facebook.com',
-                            pathEquals: '/groups/1664811250303043/'
+                            pathPrefix: '/groups/1664811250303043/'
                         },
                     }),
                 ],
