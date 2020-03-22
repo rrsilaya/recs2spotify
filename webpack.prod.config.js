@@ -59,7 +59,8 @@ const config = {
         ]),
         new MiniCssExtractPlugin({ filename: '[name].css' }),
         new ZipPlugin({
-            filename: 'recs2spotify.zip'
+            filename: 'recs2spotify.zip',
+            path: '../dist',
         })
     ],
     optimization: {
