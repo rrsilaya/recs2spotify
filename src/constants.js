@@ -14,6 +14,7 @@ export const NodeSelector = {
     AUTH_USER: '#auth-user',
     BLOCKER: '#blocker',
     LIST_BLOCKER: '#list-blocker',
+    TRACK_COUNT: '#track-count',
 };
 
 export const Command = {

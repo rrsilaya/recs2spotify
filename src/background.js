@@ -67,6 +67,7 @@ class Background {
         const spotify = new Spotify(auth.accessToken);
 
         this.tracks = await spotify.getTracksById(ids);
+        console.log(this.tracks);
         return this.tracks;
     }
 

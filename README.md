@@ -10,6 +10,6 @@ Simple extension that exports selected thread music recommendations from music r
 ### Next Tasks
 * [ ] cleanup code
 * [ ] improve error handling
-* [ ] handle big thread
-* [ ] create _proper_ icon
+* [x] handle big thread
+* [x] create _proper_ icon
 * [ ] release for Firefox

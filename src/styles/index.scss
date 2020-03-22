@@ -40,6 +40,10 @@
         padding: 0;
         list-style-type: none;
 
+        &-count {
+            flex: 1;
+        }
+
         &-track {
             display: flex;
             align-items: center;

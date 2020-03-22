@@ -18,6 +18,7 @@ class PopUp {
             authUser: document.querySelector(NodeSelector.AUTH_USER),
             blocker: document.querySelector(NodeSelector.BLOCKER),
             listBlocker: document.querySelector(NodeSelector.LIST_BLOCKER),
+            trackCount: document.querySelector(NodeSelector.TRACK_COUNT),
         };
 
         this.populateContexts = this.populateContexts.bind(this);
@@ -69,6 +70,8 @@ class PopUp {
 
             this.dom.trackList.innerHTML += template;
         });
+
+        this.dom.trackCount.innerHTML = `Tracks: ${tracks.length}`;
     }
 
     handleGetRecs() {

@@ -2,12 +2,15 @@ import axios from 'axios';
 import qs from 'qs';
 
 import { ApiToken } from '../constants';
+import Utils from './utils';
 
 const Endpoint = {
     TOKEN: 'https://accounts.spotify.com/api/token',
     TRACKS: 'https://api.spotify.com/v1/tracks',
     WHOAMI: 'https://api.spotify.com/v1/me',
 };
+
+const TRACK_LIMIT = 50;
 
 class Spotify {
     constructor(token) {
@@ -71,26 +74,33 @@ class Spotify {
         }
     }
 
-    async getTracksById(tracks = []) {
-        const ids = tracks.toString();
+    async getTracksById(trackIds = []) {
+        const trackBatches = Utils.chunkArray(trackIds, TRACK_LIMIT);
 
-        const { data } = await axios.get(
-            Endpoint.TRACKS,
-            {
-                headers: { Authorization: this.encodeToken(this.token) },
-                params: { ids },
-            },
-        );
+        const requests = trackBatches.map(async tracks => {
+            const ids = tracks.toString();
 
-        return data.tracks.map(track => ({
-            id: track.id,
-            uri: track.uri,
-            title: track.name,
-            url: track.href,
-            album: track.album.name,
-            thumbnail: track.album.images[0],
-            artist: track.artists.map(artist => artist.name).join(', '),
-        }));
+            const { data } = await axios.get(
+                Endpoint.TRACKS,
+                {
+                    headers: { Authorization: this.encodeToken(this.token) },
+                    params: { ids },
+                },
+            );
+
+            return data.tracks.map(track => ({
+                id: track.id,
+                uri: track.uri,
+                title: track.name,
+                url: track.href,
+                album: track.album.name,
+                thumbnail: track.album.images[0],
+                artist: track.artists.map(artist => artist.name).join(', '),
+            }));
+        });
+
+        const tracks = await Promise.all(requests);
+        return Utils.flatten(tracks);
     }
 
     async createPlaylist(userId, { name, description = '' }) {
@@ -116,18 +126,25 @@ class Spotify {
     }
 
     async addTracksToPlaylist(playlistId, trackUris = []) {
-        const uris = trackUris.toString();
+        const trackBatches = Utils.chunkArray(trackUris, TRACK_LIMIT);
 
-        const { data } = await axios.post(
-            `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
-            {},
-            {
-                headers: { Authorization: this.encodeToken(this.token) },
-                params: { uris },
-            },
-        );
+        const requests = trackBatches.map(async trackUris => {
+            const uris = trackUris.toString();
 
-        return data;
+            const { data } = await axios.post(
+                `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+                {},
+                {
+                    headers: { Authorization: this.encodeToken(this.token) },
+                    params: { uris },
+                },
+            );
+
+            return data;
+        });
+
+        const tracks = await Promise.all(requests);
+        return Utils.flatten(tracks);
     }
 }
 
