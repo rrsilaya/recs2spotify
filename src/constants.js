@@ -22,6 +22,7 @@ export const Command = {
     AUTHENTICATE: 'AUTHENTICATE',
     GET_TRACKS_INFO: 'GET_TRACKS_INFO',
     CREATE_PLAYLIST: 'CREATE_PLAYLIST',
+    REAUTHENTICATE: 'REAUTHENTICATE',
 };
 
 export const ApiToken = {

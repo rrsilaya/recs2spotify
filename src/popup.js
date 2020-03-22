@@ -121,8 +121,19 @@ class PopUp {
         }
     }
 
-    async handleOnLoad() {
-        await this.getAuthUser();
+    async handleReauthenticate() {
+        const { auth } = await this.storage.load(['auth']);
+        const now = Date.now();
+
+        if (auth && auth.expiry <= now) {
+            this.sender.sendToActiveTab({ type: Command.REAUTHENTICATE, payload: auth.refreshToken });
+        }
+    }
+
+    handleOnLoad() {
+        this.getAuthUser();
+        this.handleReauthenticate();
+
         this.sender.sendToActiveTab({ type: Command.GET_CONTEXTS }, contexts => this.populateContexts(contexts));
     }
 

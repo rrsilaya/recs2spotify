@@ -36,7 +36,28 @@ class Spotify {
         return {
             accessToken: data.access_token,
             refreshToken: data.refresh_token,
+            expiry: data.expires_in,
         };
+    }
+
+    static async reauthenticate(refreshToken) {
+        const payload = {
+            grant_type: 'refresh_token',
+            refresh_token: refreshToken,
+        };
+
+        const { data } = await axios.post(
+            Endpoint.TOKEN,
+            qs.stringify(payload),
+            {
+                headers: {
+                    Authorization: this.encodeToken(`${Api.CLIENT_ID}:${Api.CLIENT_SECRET}`),
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            },
+        );
+
+        return { accessToken: data.access_token, expiry: data.expires_in };
     }
 
     async getUserInfo() {

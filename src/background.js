@@ -1,12 +1,11 @@
-import axios from 'axios';
-import qs from 'qs';
-
 import {
     Installer,
     Spotify,
     Storage,
 } from './util';
 import { ApiToken, Command } from './constants';
+
+const MILLISECOND = 1000;
 
 class Background {
     constructor() {
@@ -42,12 +41,25 @@ class Background {
         const code = params.get('code');
 
         const token = await Spotify.getTokenFromCode(code, this.uri);
+        token.expiry = Date.now() + token.expiry * MILLISECOND;
 
         const spotify = new Spotify(token.accessToken);
         const me = await spotify.getUserInfo();
 
         this.storage.save({ auth: token, me });
         return me;
+    }
+
+    async reauthenticate(token) {
+        const newToken = await Spotify.reauthenticate(token.refreshToken);
+        const auth = {
+            ...token,
+            accessToken: newToken.accessToken,
+            expiry: Date.now() + newToken.expiry * MILLISECOND,
+        };
+
+        this.storage.save({ auth });
+        return auth;
     }
 
     async getTrackInfo(ids = []) {
