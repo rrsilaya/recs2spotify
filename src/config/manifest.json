@@ -9,15 +9,19 @@
         "tabs",
         "identity",
         "storage",
-        "activeTab",
-        "declarativeContent"
+        "activeTab"
     ],
     "content_scripts": [{
         "js": ["core.js"],
-        "matches": ["https://www.facebook.com/groups/1664811250303043/**/*"]
+        "matches": ["https://www.facebook.com/groups/1664811250303043/*"]
     }],
     "page_action": {
-        "default_popup": "popup.html"
+        "default_popup": "popup.html",
+        "default_icon": {
+            "16": "icons/icon16.png",
+            "48": "icons/icon48.png",
+            "128": "icons/icon128.png"
+        }
     },
     "background": {
         "scripts": ["background.js"],

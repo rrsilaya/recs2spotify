@@ -12,7 +12,7 @@ class Background {
         this.installer = new Installer();
         this.storage = new Storage();
 
-        this.uri = chrome.identity.getRedirectURL('recs2spotify');
+        this.uri = `${chrome.identity.getRedirectURL()}recs2spotify`;
         this.tracks = [];
 
         this.authenticate = this.authenticate.bind(this);
@@ -67,7 +67,6 @@ class Background {
         const spotify = new Spotify(auth.accessToken);
 
         this.tracks = await spotify.getTracksById(ids);
-        console.log(this.tracks);
         return this.tracks;
     }
 

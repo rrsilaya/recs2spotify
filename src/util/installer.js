@@ -1,3 +1,5 @@
+const URL_MATCH = /facebook\.com\/groups\/1664811250303043\//;
+
 class Installer {
     bootstrap(functions) {
         chrome.runtime.onInstalled.addListener(() => {
@@ -6,18 +8,12 @@ class Installer {
     }
 
     initialize() {
-        chrome.declarativeContent.onPageChanged.removeRules(undefined, function() {
-            chrome.declarativeContent.onPageChanged.addRules([{
-                conditions: [
-                    new chrome.declarativeContent.PageStateMatcher({
-                        pageUrl: {
-                            hostEquals: 'www.facebook.com',
-                            pathPrefix: '/groups/1664811250303043/'
-                        },
-                    }),
-                ],
-                actions: [new chrome.declarativeContent.ShowPageAction()]
-            }]);
+        chrome.tabs.onUpdated.addListener(function(tabId, _, tab) {
+            if (tab.url.match(URL_MATCH)) {
+                chrome.pageAction.show(tabId);
+            } else {
+                chrome.pageActions.hide(tabId);
+            }
         });
     }
 
