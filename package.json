@@ -1,6 +1,6 @@
 {
     "name": "recs2spotify",
-    "version": "0.1.3",
+    "version": "0.1.4",
     "main": "index.js",
     "author": "Ralph Lawrence Silaya <rrsilaya@gmail.com>",
     "license": "MIT",
