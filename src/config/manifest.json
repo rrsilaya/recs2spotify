@@ -1,7 +1,7 @@
 {
     "name": "recs2spotify",
     "description": "Simple extension that exports selected thread music recommendations from music recs without context facebook group",
-    "version": "0.1.5",
+    "version": "0.1.6",
     "permissions": [
         "http://*/*",
         "https://*/*",
@@ -13,10 +13,7 @@
     ],
     "content_scripts": [{
         "js": ["core.js"],
-        "matches": [
-            "https://www.facebook.com/1664811250303043/*",
-            "https://www.facebook.com/1664811250303043/**/*"
-        ]
+        "matches": ["<all_urls>"]
     }],
     "page_action": {
         "default_popup": "popup.html",
