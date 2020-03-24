@@ -74,7 +74,10 @@ class Background {
         const { auth, me } = await this.storage.load(['auth', 'me']);
         const spotify = new Spotify(auth.accessToken);
 
-        const playlist = await spotify.createPlaylist(me.id, { name: title });
+        const playlist = await spotify.createPlaylist(me.id, {
+            name: title,
+            description: 'Exported from "music recs without playlist" group using recs2spotify 🎵🔥',
+        });
         const trackUris = this.tracks.map(track => track.uri);
 
         await spotify.addTracksToPlaylist(playlist.id, trackUris);
