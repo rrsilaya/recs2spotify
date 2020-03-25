@@ -10,7 +10,7 @@
 I've made this extension available via the following providers:
 |Firefox|Chrome|Edge|
 |--|--|--|
-| [![Firefox][firefox_badge]](https://addons.mozilla.org/en-US/firefox/addon/recs2spotify/) | _Coming Soon_ | _Coming Soon_ |
+| [![Firefox][firefox_badge]](https://addons.mozilla.org/en-US/firefox/addon/recs2spotify/) | _Coming Soon_ | [![Edge][edge_badge]](https://microsoftedge.microsoft.com/addons/detail/oonmmellogjbifeoanfdbniagohceplh) |
 
 ### Usage
 1. Install the extension via any of the providers above.
@@ -51,5 +51,6 @@ If you have issues using the extension, feel free to send an email to [rrsilaya@
 
 [firefox_badge]: ./.github/firefox-badge.png
 [chrome_badge]: ./.github/chrome-badge.png
+[edge_badge]: ./.github/edge-badge.png
 
 [firefox_link]: https://addons.mozilla.org/en-US/firefox/addon/recs2spotify/
