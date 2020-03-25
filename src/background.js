@@ -1,6 +1,7 @@
 import {
     Installer,
     Spotify,
+    SpotifyAuth,
     Storage,
 } from './util';
 import { ApiToken, Command } from './constants';
@@ -11,6 +12,7 @@ class Background {
     constructor() {
         this.installer = new Installer();
         this.storage = new Storage();
+        this.oauth = new SpotifyAuth();
 
         this.uri = `${chrome.identity.getRedirectURL()}recs2spotify`;
         this.tracks = [];
@@ -40,7 +42,7 @@ class Background {
         const params = new URLSearchParams(response.replace(this.uri, ''));
         const code = params.get('code');
 
-        const token = await Spotify.getTokenFromCode(code, this.uri);
+        const token = await this.oauth.authenticate(code, this.uri);
         token.expiry = Date.now() + token.expiry * MILLISECOND;
 
         const spotify = new Spotify(token.accessToken);
@@ -51,7 +53,7 @@ class Background {
     }
 
     async reauthenticate(token) {
-        const newToken = await Spotify.reauthenticate(token.refreshToken);
+        const newToken = await this.oauth.refreshAuth(token.refreshToken);
         const auth = {
             ...token,
             accessToken: newToken.accessToken,

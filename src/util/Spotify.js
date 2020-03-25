@@ -1,70 +1,38 @@
 import axios from 'axios';
 import qs from 'qs';
 
-import { ApiToken } from '../constants';
 import Utils from './utils';
 
-const Endpoint = {
-    TOKEN: 'https://accounts.spotify.com/api/token',
-    TRACKS: 'https://api.spotify.com/v1/tracks',
-    WHOAMI: 'https://api.spotify.com/v1/me',
-};
-
 const TRACK_LIMIT = 50;
+const API_URL = 'https://api.spotify.com/v1';
 
 class Spotify {
     constructor(token) {
         this.token = token;
-    }
-
-    encodeToken(token) {
-        return `Bearer ${token}`;
-    }
-
-    static async getTokenFromCode(code, redirectUri) {
-        const payload = {
-            grant_type: 'authorization_code',
-            code,
-            redirect_uri: redirectUri,
-            client_id: ApiToken.CLIENT_ID,
-            client_secret: ApiToken.CLIENT_SECRET,
-        };
-
-        const { data } = await axios.post(
-            Endpoint.TOKEN,
-            qs.stringify(payload),
-            { headers: { 'Content-Type': 'application/x-www-form-urlencoded' }},
-        );
-
-        return {
-            accessToken: data.access_token,
-            refreshToken: data.refresh_token,
-            expiry: data.expires_in,
-        };
-    }
-
-    static async reauthenticate(refreshToken) {
-        const payload = {
-            grant_type: 'refresh_token',
-            refresh_token: refreshToken,
-        };
-
-        const { data } = await axios.post(
-            Endpoint.TOKEN,
-            qs.stringify(payload),
-            {
-                headers: {
-                    Authorization: this.encodeToken(`${Api.CLIENT_ID}:${Api.CLIENT_SECRET}`),
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
+        this.api = axios.create({
+            baseURL: API_URL,
+            headers: {
+                'Content-Type': 'application/x-www-form-urlencoded',
             },
-        );
+            paramsSerializer: params => qs.stringify(params, { arrayFormat: 'brackets' }),
+        });
 
-        return { accessToken: data.access_token, expiry: data.expires_in };
+        this._credentialsMiddleware = this._credentialsMiddleware.bind(this);
+        this.api.interceptors.request.use(this._credentialsMiddleware);
     }
+
+    _credentialsMiddleware(config) {
+        return {
+            ...config,
+            headers: {
+                ...config.headers,
+                Authorization: `Bearer ${this.token}`,
+            },
+        };
+    };
 
     async getUserInfo() {
-        const { data } = await axios.get(Endpoint.WHOAMI, { headers: { Authorization: this.encodeToken(this.token) }});
+        const { data } = await this.api.get('/me');
 
         return {
             name: data.display_name,
@@ -80,13 +48,7 @@ class Spotify {
         const requests = trackBatches.map(async tracks => {
             const ids = tracks.toString();
 
-            const { data } = await axios.get(
-                Endpoint.TRACKS,
-                {
-                    headers: { Authorization: this.encodeToken(this.token) },
-                    params: { ids },
-                },
-            );
+            const { data } = await this.api.get('/tracks', { params: { ids }});
 
             return data.tracks.map(track => ({
                 id: track.id,
@@ -110,11 +72,7 @@ class Spotify {
             public: false,
         };
 
-        const { data } = await axios.post(
-            `https://api.spotify.com/v1/users/${userId}/playlists`,
-            payload,
-            { headers: { Authorization: this.encodeToken(this.token) }},
-        );
+        const { data } = await this.api.post(`/users/${userId}/playlists`, payload);
 
         return {
             url: `https://open.spotify.com/playlist/${data.id}`,
@@ -131,13 +89,10 @@ class Spotify {
         const requests = trackBatches.map(async trackUris => {
             const uris = trackUris.toString();
 
-            const { data } = await axios.post(
-                `https://api.spotify.com/v1/playlists/${playlistId}/tracks`,
+            const { data } = await this.api.post(
+                `/playlists/${playlistId}/tracks`,
                 {},
-                {
-                    headers: { Authorization: this.encodeToken(this.token) },
-                    params: { uris },
-                },
+                { params: { uris }},
             );
 
             return data;
