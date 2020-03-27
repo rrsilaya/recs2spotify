@@ -11,7 +11,7 @@ class SpotifyAuth {
             baseURL: API_URL,
             headers: {
                 'Content-Type': 'application/x-www-form-urlencoded',
-                Authorization: btoa(`${ApiToken.CLIENT_ID}:${ApiToken.CLIENT_SECRET}`),
+                Authorization: `Basic ${btoa(`${ApiToken.CLIENT_ID}:${ApiToken.CLIENT_SECRET}`)}`,
             },
         });
     }
