@@ -13,18 +13,17 @@ class SpotifyAuth {
                 'Content-Type': 'application/x-www-form-urlencoded',
                 Authorization: btoa(`${ApiToken.CLIENT_ID}:${ApiToken.CLIENT_SECRET}`),
             },
-            paramsSerializer: params => qs.stringify(params, { arrayFormat: 'brackets' }),
         });
     }
 
     authenticate = async (code, redirectUri) => {
-        const params = {
+        const payload = {
             grant_type: 'authorization_code',
             code,
             redirect_uri: redirectUri,
         };
 
-        const { data } = await this.api.post('/token', {}, { params });
+        const { data } = await this.api.post('/token', qs.stringify(payload));
 
         return {
             accessToken: data.access_token,
@@ -34,12 +33,12 @@ class SpotifyAuth {
     }
 
     refreshAuth = async (refreshToken) => {
-        const params = {
+        const payload = {
             grant_type: 'refresh_token',
             refresh_token: refreshToken,
         };
 
-        const { data } = await this.api.post('/token', {}, { params });
+        const { data } = await this.api.post('/token', qs.stringify(payload));
 
         return { accessToken: data.access_token, expiry: data.expires_in };
     }
