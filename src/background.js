@@ -18,6 +18,7 @@ class Background {
         this.tracks = [];
 
         this.authenticate = this.authenticate.bind(this);
+        this.reauthenticate = this.reauthenticate.bind(this);
         this.handleAuthFlow = this.handleAuthFlow.bind(this);
         this.initialize = this.initialize.bind(this);
         this.start = this.start.bind(this);
@@ -99,6 +100,10 @@ class Background {
                     this.authenticate()
                         .then(identity => sendResponse(identity));
                     break;
+
+                case Command.REAUTHENTICATE:
+                    this.reauthenticate(request.payload)
+                        .then(auth => sendResponse(auth));
 
                 case Command.GET_TRACKS_INFO:
                     this.getTrackInfo(request.payload)

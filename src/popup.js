@@ -129,7 +129,7 @@ class PopUp {
         const now = Date.now();
 
         if (auth && auth.expiry <= now) {
-            this.sender.sendToActiveTab({ type: Command.REAUTHENTICATE, payload: auth.refreshToken });
+            this.sender.sendToRuntime({ type: Command.REAUTHENTICATE, payload: auth });
         }
     }
 
