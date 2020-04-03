@@ -1,4 +1,4 @@
-const URL_MATCH = /facebook\.com\/groups\/1664811250303043\//;
+const URL_MATCH = /facebook\.com\/groups\/1664811250303043\/?/;
 
 class Installer {
     bootstrap(functions) {

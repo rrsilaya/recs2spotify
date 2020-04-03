@@ -3,8 +3,9 @@ const path = require('path');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin');
 const ZipPlugin = require('zip-webpack-plugin');
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
+const pkg = require('./package.json');
 
 const config = {
     entry: {
@@ -26,7 +27,10 @@ const config = {
                     loader: 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env'],
-                        plugins: ['transform-class-properties']
+                        plugins: [
+                            '@babel/plugin-transform-runtime',
+                            'transform-class-properties'
+                        ]
                     }
                 }
             },
@@ -60,7 +64,7 @@ const config = {
         ]),
         new MiniCssExtractPlugin({ filename: '[name].css' }),
         new ZipPlugin({
-            filename: 'recs2spotify.zip',
+            filename: `recs2spotify-v${pkg.version}.zip`,
             path: '../dist',
         })
     ],

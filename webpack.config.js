@@ -23,7 +23,10 @@ const config = {
                     loader: 'babel-loader',
                     options: {
                         presets: ['@babel/preset-env'],
-                        plugins: ['transform-class-properties']
+                        plugins: [
+                            '@babel/plugin-transform-runtime',
+                            'transform-class-properties'
+                        ]
                     }
                 }
             },
