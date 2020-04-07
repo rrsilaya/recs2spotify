@@ -17,11 +17,10 @@ class Spotify {
             paramsSerializer: params => qs.stringify(params, { arrayFormat: 'brackets' }),
         });
 
-        this._credentialsMiddleware = this._credentialsMiddleware.bind(this);
         this.api.interceptors.request.use(this._credentialsMiddleware);
     }
 
-    _credentialsMiddleware(config) {
+    _credentialsMiddleware = (config) => {
         return {
             ...config,
             headers: {
@@ -31,7 +30,7 @@ class Spotify {
         };
     };
 
-    async getUserInfo() {
+    getUserInfo = async () => {
         const { data } = await this.api.get('/me');
 
         return {
@@ -42,7 +41,7 @@ class Spotify {
         }
     }
 
-    async getTracksById(trackIds = []) {
+    getTracksById = async (trackIds = []) => {
         const trackBatches = Utils.chunkArray(trackIds, TRACK_LIMIT);
 
         const requests = trackBatches.map(async tracks => {
@@ -65,7 +64,7 @@ class Spotify {
         return Utils.flatten(tracks);
     }
 
-    async createPlaylist(userId, { name, description = '' }) {
+    createPlaylist = async (userId, { name, description = '' }) => {
         const payload = {
             name,
             description,
@@ -83,7 +82,7 @@ class Spotify {
         };
     }
 
-    async addTracksToPlaylist(playlistId, trackUris = []) {
+    addTracksToPlaylist = async (playlistId, trackUris = []) => {
         const trackBatches = Utils.chunkArray(trackUris, TRACK_LIMIT);
 
         const requests = trackBatches.map(async trackUris => {

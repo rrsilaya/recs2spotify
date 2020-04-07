@@ -6,18 +6,14 @@ class Core {
         this.scraper = new Scraper();
         this.sender = new Sender();
         this.posts = [];
-
-        this.getContexts = this.getContexts.bind(this);
-        this.getRecsFromId = this.getRecsFromId.bind(this);
-        this.start = this.start.bind(this);
     }
 
-    getContexts() {
+    getContexts = () => {
         this.posts = this.scraper.getPosts();
         return this.scraper.getContexts(this.posts);
     }
 
-    getRecsFromId(id) {
+    getRecsFromId = (id) => {
         const URL_REGEX = /^https?:\/\/open\.spotify\.com\/track\/(\w+)\?/;
 
         const recs = this.scraper.getMusicFromPost(this.posts[id]);
@@ -26,7 +22,7 @@ class Core {
         return trackIds;
     }
 
-    start() {
+    start = () => {
         chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
             switch (request.type) {
                 case Command.GET_CONTEXTS:

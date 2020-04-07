@@ -16,29 +16,22 @@ class Background {
 
         this.uri = `${chrome.identity.getRedirectURL()}recs2spotify`;
         this.tracks = [];
-
-        this.authenticate = this.authenticate.bind(this);
-        this.reauthenticate = this.reauthenticate.bind(this);
-        this.handleAuthFlow = this.handleAuthFlow.bind(this);
-        this.start = this.start.bind(this);
     }
 
-    authenticate() {
-        return new Promise((resolve) => {
-            chrome.identity.launchWebAuthFlow(
-                {
-                    url: `https://accounts.spotify.com/authorize?client_id=${ApiToken.CLIENT_ID}&redirect_uri=${encodeURIComponent(this.uri)}&response_type=code&scope=playlist-modify-private`,
-                    interactive: true,
-                },
-                response => {
-                    this.handleAuthFlow(response)
-                        .then(identity => resolve(identity));
-                },
-            );
-        });
-    }
+    authenticate = () => new Promise((resolve) => {
+        chrome.identity.launchWebAuthFlow(
+            {
+                url: `https://accounts.spotify.com/authorize?client_id=${ApiToken.CLIENT_ID}&redirect_uri=${encodeURIComponent(this.uri)}&response_type=code&scope=playlist-modify-private`,
+                interactive: true,
+            },
+            response => {
+                this.handleAuthFlow(response)
+                    .then(identity => resolve(identity));
+            },
+        );
+    });
 
-    async handleAuthFlow(response) {
+    handleAuthFlow = async (response) => {
         const params = new URLSearchParams(response.replace(this.uri, ''));
         const code = params.get('code');
 
@@ -52,7 +45,7 @@ class Background {
         return me;
     }
 
-    async reauthenticate(token) {
+    reauthenticate = async (token) => {
         const newToken = await this.oauth.refreshAuth(token.refreshToken);
         const auth = {
             ...token,
@@ -64,7 +57,7 @@ class Background {
         return auth;
     }
 
-    async getTrackInfo(ids = []) {
+    getTrackInfo = async (ids = []) => {
         const { auth } = await this.storage.load(['auth']);
         const spotify = new Spotify(auth.accessToken);
 
@@ -72,7 +65,7 @@ class Background {
         return this.tracks;
     }
 
-    async generatePlaylist(title) {
+    generatePlaylist = async (title) => {
         const { auth, me } = await this.storage.load(['auth', 'me']);
         const spotify = new Spotify(auth.accessToken);
 
@@ -86,7 +79,7 @@ class Background {
         return playlist;
     }
 
-    start() {
+    start = () => {
         this.installer.initialize();
 
         chrome.runtime.onMessage.addListener((request, _, sendResponse) => {

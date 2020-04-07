@@ -1,11 +1,11 @@
 import { NodeSelector } from '../constants';
 
 class Scraper {
-    getPosts() {
+    getPosts = () => {
         return document.querySelectorAll(NodeSelector.POST);
     }
 
-    getContexts(posts) {
+    getContexts = (posts) => {
         const contexts = [];
 
         posts.forEach((post, id) => {
@@ -23,7 +23,7 @@ class Scraper {
         return contexts;
     }
 
-    getMusicFromPost(post) {
+    getMusicFromPost = (post) => {
         const songs = [
             ...post.querySelectorAll(NodeSelector.SPOTIFY_TRACK_PARSED),
             ...post.querySelectorAll(NodeSelector.SPOTIFY_TRACK_UNPARSED),

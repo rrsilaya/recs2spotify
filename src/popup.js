@@ -20,18 +20,9 @@ class PopUp {
             listBlocker: document.querySelector(NodeSelector.LIST_BLOCKER),
             trackCount: document.querySelector(NodeSelector.TRACK_COUNT),
         };
-
-        this.populateContexts = this.populateContexts.bind(this);
-        this.handleGetRecs = this.handleGetRecs.bind(this);
-        this.handleCreatePlaylist = this.handleCreatePlaylist.bind(this);
-        this.handleAuthenticate = this.handleAuthenticate.bind(this);
-        this.handleOnLoad = this.handleOnLoad.bind(this);
-        this.getAuthUser = this.getAuthUser.bind(this);
-        this.handleContextChange = this.handleContextChange.bind(this);
-        this.start = this.start.bind(this);
     }
 
-    populateContexts(contexts = []) {
+    populateContexts = (contexts = []) => {
         contexts.forEach(context => {
             const template = `
                 <option value="${context.id}">${context.label}</option>
@@ -41,7 +32,7 @@ class PopUp {
         });
     }
 
-    populateTrackList(tracks = []) {
+    populateTrackList = (tracks = []) => {
         this.dom.trackList.innerHTML = '';
 
         tracks.forEach(track => {
@@ -74,7 +65,7 @@ class PopUp {
         this.dom.trackCount.innerHTML = `Tracks: ${tracks.length}`;
     }
 
-    handleGetRecs() {
+    handleGetRecs = () => {
         this.dom.getContexts.classList.add(BUTTON_LOADING);
         this.dom.listBlocker.classList.add('Popup-list-blocker--hidden');
 
@@ -91,7 +82,7 @@ class PopUp {
         );
     }
 
-    handleAuthenticate() {
+    handleAuthenticate = () => {
         this.dom.authenticate.classList.add(BUTTON_LOADING);
         this.sender.sendToRuntime({ type: Command.AUTHENTICATE }, identity => {
             this.dom.authenticate.classList.remove(BUTTON_LOADING);
@@ -100,7 +91,7 @@ class PopUp {
         });
     }
 
-    handleCreatePlaylist() {
+    handleCreatePlaylist = () => {
         this.dom.createPlaylist.classList.add(BUTTON_LOADING);
 
         const title = this.dom.dropdown[+this.dom.dropdown.selectedIndex].text;
@@ -118,13 +109,13 @@ class PopUp {
         });
     }
 
-    handleContextChange({ target }) {
+    handleContextChange = ({ target }) => {
         if (target.value) {
             this.dom.getContexts.disabled = false;
         }
     }
 
-    async handleReauthenticate() {
+    handleReauthenticate = async () => {
         const { auth } = await this.storage.load(['auth']);
         const now = Date.now();
 
@@ -133,14 +124,14 @@ class PopUp {
         }
     }
 
-    handleOnLoad() {
+    handleOnLoad = () => {
         this.getAuthUser();
         this.handleReauthenticate();
 
         this.sender.sendToActiveTab({ type: Command.GET_CONTEXTS }, contexts => this.populateContexts(contexts));
     }
 
-    async getAuthUser() {
+    getAuthUser = async () => {
         const { me } = await this.storage.load(['me']);
 
         if (me) {
@@ -150,7 +141,7 @@ class PopUp {
         }
     }
 
-    start() {
+    start = () => {
         this.dom.getContexts.addEventListener('click', this.handleGetRecs);
         this.dom.authenticate.addEventListener('click', this.handleAuthenticate);
         this.dom.createPlaylist.addEventListener('click', this.handleCreatePlaylist);
