@@ -20,7 +20,6 @@ class Background {
         this.authenticate = this.authenticate.bind(this);
         this.reauthenticate = this.reauthenticate.bind(this);
         this.handleAuthFlow = this.handleAuthFlow.bind(this);
-        this.initialize = this.initialize.bind(this);
         this.start = this.start.bind(this);
     }
 
@@ -87,13 +86,9 @@ class Background {
         return playlist;
     }
 
-    initialize() {
-        this.installer.bootstrap([
-            this.installer.initialize,
-        ]);
-    }
-
     start() {
+        this.installer.initialize();
+
         chrome.runtime.onMessage.addListener((request, _, sendResponse) => {
             switch (request.type) {
                 case Command.AUTHENTICATE:
@@ -122,6 +117,4 @@ class Background {
 }
 
 const app = new Background();
-
-app.initialize();
 app.start();
