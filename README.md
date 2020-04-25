@@ -10,7 +10,7 @@
 I've made this extension available via the following providers:
 |Firefox|Chrome|Edge|
 |--|--|--|
-| [![Firefox][firefox_badge]](https://addons.mozilla.org/en-US/firefox/addon/recs2spotify/) | _Coming Soon_ | [![Edge][edge_badge]](https://microsoftedge.microsoft.com/addons/detail/oonmmellogjbifeoanfdbniagohceplh) |
+| [![Firefox][firefox_badge]](https://addons.mozilla.org/en-US/firefox/addon/recs2spotify/) | [![Chrome][chrome_badge]](https://chrome.google.com/webstore/detail/recs2spotify/bfeeeoachiihcdmkndhpommfpenaohma) | [![Edge][edge_badge]](https://microsoftedge.microsoft.com/addons/detail/oonmmellogjbifeoanfdbniagohceplh) |
 
 ### Usage
 1. Install the extension via any of the providers above.
@@ -39,7 +39,7 @@ I'm using Webpack to bundle all the necessary modules of the extension.
 5. To build the bundle, enter `yarn build`. This will create the zipped bundle in `dist/`.
 
 ### Next Tasks
-* [ ] cleanup code
+* [x] cleanup code
 * [ ] improve error handling
 * [x] handle big thread
 * [x] create _proper_ icon
