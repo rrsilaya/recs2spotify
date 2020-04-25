@@ -1,15 +1,22 @@
 import { NodeSelector } from '../constants';
 
 class Scraper {
+    isFbNext = () => {
+        const body = document.querySelector(NodeSelector.FB_NEXT);
+        return !!body;
+    }
+
     getPosts = () => {
-        return document.querySelectorAll(NodeSelector.POST);
+        const selector = this.isFbNext() ? NodeSelector.POST_NEXT : NodeSelector.POST;
+        return document.querySelectorAll(selector);
     }
 
     getContexts = (posts) => {
+        const selector = this.isFbNext() ? NodeSelector.CONTEXT_NEXT : NodeSelector.CONTEXT;
         const contexts = [];
 
         posts.forEach((post, id) => {
-            const context = post.querySelector(NodeSelector.CONTEXT);
+            const context = post.querySelector(selector);
 
             if (context) {
                 contexts.push({
